@@ -1,0 +1,99 @@
+commit e55961ea4a6478575bb253a42ad94c916f99ea4f
+Author: Artemiy Kononov <artemiy.kononov@jetbrains.com>
+Date:   Thu Nov 18 05:01:12 2021 +0300
+
+    initial precheck commit
+
+diff --git a/.gitignore b/.gitignore
+index bd87ce7..85e6106 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -55,3 +55,20 @@ com_crashlytics_export_strings.xml
+ crashlytics.properties
+ crashlytics-build.properties
+ fabric.properties
++
++.idea
++.idea/*
++.gradle
++.gradle/*
++.vscode
++.vscode/*
++build
++build/*
++bin
++bin/*
++out
++out/*
++.classpath
++.project
++.settings
++.settings/*
+\ No newline at end of file
+diff --git a/build.gradle.kts b/build.gradle.kts
+index 51762d2..d59946e 100644
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -1,7 +1,7 @@
+ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+ 
+ plugins {
+-    kotlin("jvm") version "1.5.31"
++    kotlin("jvm") version "1.6.0"
+     application
+ }
+ group = "ru.senin.kotlin.wiki"
+@@ -21,7 +21,14 @@ dependencies {
+ }
+ 
+ tasks.withType<KotlinCompile> {
+-    kotlinOptions.jvmTarget = "1.8"
++    kotlinOptions.jvmTarget = "17"
++}
++
++tasks.test {
++    useJUnitPlatform()
++
++    dependsOn cleanTest
++    testLogging.showStandardStreams = true
+ }
+ 
+ kotlin.sourceSets.all {
+diff --git a/src/main/kotlin/ru/senin/kotlin/wiki/main.kt b/src/main/kotlin/ru/senin/kotlin/wiki/main.kt
+index 32be936..4f21554 100644
+--- a/src/main/kotlin/ru/senin/kotlin/wiki/main.kt
++++ b/src/main/kotlin/ru/senin/kotlin/wiki/main.kt
+@@ -31,11 +31,9 @@ class Parameters : Arkenv() {
+     }
+ }
+ 
+-lateinit var parameters: Parameters
+-
+ fun main(args: Array<String>) {
+     try {
+-        parameters = Parameters().parse(args)
++        val parameters = Parameters().parse(args)
+ 
+         if (parameters.help) {
+             println(parameters.toString())
+@@ -43,7 +41,7 @@ fun main(args: Array<String>) {
+         }
+ 
+         val duration = measureTime {
+-            // TODO
++            solve(parameters)
+         }
+         println("Time: ${duration.inWholeMilliseconds} ms")
+ 
+diff --git a/src/main/kotlin/ru/senin/kotlin/wiki/solution.kt b/src/main/kotlin/ru/senin/kotlin/wiki/solution.kt
+new file mode 100644
+index 0000000..bbe7e33
+--- /dev/null
++++ b/src/main/kotlin/ru/senin/kotlin/wiki/solution.kt
+@@ -0,0 +1,5 @@
++package ru.senin.kotlin.wiki
++
++fun solve(parameters: Parameters) {
++
++}
+\ No newline at end of file
